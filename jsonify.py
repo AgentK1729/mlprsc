@@ -23,9 +23,11 @@ def parse(path):
 	from json import dump
 	files = listdir(path)
 	data = {}
+	i = 1
 	for filename in files:
 		command = "readelf -SW %s" % path+filename
-		data[filename] = jsonify(Popen(command, shell=True, stdout=PIPE).stdout)
+		data[i] = jsonify(Popen(command, shell=True, stdout=PIPE).stdout)
+		i += 1
 
 	dump(data, open("data.json", "w"))
 

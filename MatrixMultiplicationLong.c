@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define INPUTSIZE 1000
-
+#define INPUTSIZE 9903
 void main()
 {
     //printf("Hello World");

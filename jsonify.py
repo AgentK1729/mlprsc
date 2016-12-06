@@ -5,17 +5,16 @@ def parse(path):
 			lines.append(line)
 		count = int(lines[0].split(" ")[2])
 		attr = {}
+		required_keys = [".gnu.hash", ".dynamic", ".dynsym", ".dynstr", ".got",
+		".plt", ".rodata", ".rela.dyn"]
 		for i in range(1, count):
+			split_line = lines[4+i].split()
 			if i <= 9:
-				try:
-					attr[lines[4+i].split(' ')[4]] = int(lines[4+i].split(' ')[25], 16)
-				except ValueError:
-					attr[lines[4+i].split(' ')[4]] = 0
+				if split_line[2] in required_keys:
+					attr[split_line[2]] = int(split_line[6], 16)
 			else:
-				try:
-					attr[lines[4+i].split(' ')[3]] = int(lines[4+i].split(' ')[26], 16)
-				except ValueError:
-					attr[lines[4+i].split(' ')[3]] = 0
+				if split_line[1] in required_keys:
+					attr[split_line[1]] = int(split_line[5], 16)
 		return attr
 
 	from os import listdir
@@ -26,12 +25,20 @@ def parse(path):
 	i = 1
 	for filename in files:
 		command = "readelf -SW %s" % path+filename
-		data[i] = jsonify(Popen(command, shell=True, stdout=PIPE).stdout)
+		temp_data = jsonify(Popen(command, shell=True, stdout=PIPE).stdout)
+		command = "size %s" % path+filename
+		size_data = Popen(command, shell=True, stdout=PIPE).stdout
+		lines = []
+		for line in size_data:
+			lines.append(line)
+
+		temp_data["text"] = int(lines[1].split()[0])
+		temp_data["data"] = int(lines[1].split()[1])
+		temp_data["bss"] = int(lines[1].split()[2])
+		data[i] = temp_data
 		i += 1
 
 	dump(data, open("data.json", "w"))
 
 
-
-from sys import argv
-parse(argv[1])
+parse("/mnt/d/Programming/OSProjectPrograms/")

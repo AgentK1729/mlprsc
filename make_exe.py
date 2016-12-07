@@ -25,4 +25,4 @@ def make_exe(filename, path):
 		command = "gcc %s -o %s%s%d" % (filename, path, filename.split(".")[0], i)
 		Popen(command, shell=True, stdout=PIPE).stdout
 
-make_exe("MatrixMultiplicationLong.c", "/mnt/d/Programming/OSProjectPrograms/")
+make_exe("MatrixMultiplicationLong.c", "/mnt/d/Programming/mlprsc/Executables/")

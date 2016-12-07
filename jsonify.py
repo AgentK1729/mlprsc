@@ -22,9 +22,15 @@ def parse(path):
 	from json import dump
 	files = listdir(path)
 	data = {}
-	i = 1
+	digits = [str(i) for i in range(10)]
 	for filename in files:
 		command = "readelf -SW %s" % path+filename
+		print filename
+		ind = 0
+		while filename[ind] not in digits:
+			ind += 1
+		input_size = int(filename[ind:])
+
 		temp_data = jsonify(Popen(command, shell=True, stdout=PIPE).stdout)
 		command = "size %s" % path+filename
 		size_data = Popen(command, shell=True, stdout=PIPE).stdout
@@ -35,10 +41,10 @@ def parse(path):
 		temp_data["text"] = int(lines[1].split()[0])
 		temp_data["data"] = int(lines[1].split()[1])
 		temp_data["bss"] = int(lines[1].split()[2])
-		data[i] = temp_data
-		i += 1
+		temp_data["input_size"] = input_size
+		data[filename] = temp_data
 
 	dump(data, open("data.json", "w"))
 
 
-parse("/mnt/d/Programming/OSProjectPrograms/")
+parse("/mnt/d/Programming/mlprsc/Executables/")

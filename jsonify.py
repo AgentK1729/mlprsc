@@ -1,3 +1,4 @@
+from sys import argv
 def parse(path):
 	def jsonify(string):
 		lines = []
@@ -47,4 +48,4 @@ def parse(path):
 	dump(data, open("data.json", "w"))
 
 
-parse("/mnt/d/Programming/mlprsc/Executables/")
+parse(argv[1])

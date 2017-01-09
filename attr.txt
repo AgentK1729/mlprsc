@@ -1,4 +1,4 @@
-There are 30 section headers, starting at offset 0x1178:
+There are 31 section headers, starting at offset 0x1178:
 
 Section Headers:
   [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
